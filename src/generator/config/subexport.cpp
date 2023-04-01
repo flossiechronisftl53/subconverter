@@ -342,6 +342,10 @@ proxyToClash(std::vector<Proxy> &nodes, YAML::Node &yamlnode, const ProxyGroupCo
                     singleproxy["alpn"].push_back(x.Alpn);
                 if (!x.OBFSParam.empty())
                     singleproxy["obfs"] = x.OBFSParam;
+                if (!x.MPort.empty()) {
+                    singleproxy["ports"] = x.MPort;
+                    singleproxy.remove("port");
+                };
                 break;
             case ProxyType::VLESS:
                 singleproxy["type"] = "vless";

@@ -66,11 +66,12 @@ void vmessConstruct(Proxy &node, const std::string &group, const std::string &re
     }
 }
 
-void hysteriaConstruct(Proxy &node, const std::string &group, const std::string &remarks, const std::string &add, const std::string &port, const std::string &type, const std::string &auth, const std::string &host, const std::string &up, const std::string &down, const std::string &alpn, const std::string &obfsParam, const std::string &insecure ,tribool udp, tribool tfo, tribool scv, tribool tls13)
+void hysteriaConstruct(Proxy &node, const std::string &group, const std::string &remarks, const std::string &add, const std::string &port, const std::string &type, const std::string &auth, const std::string &host, const std::string &mport, const std::string &up, const std::string &down, const std::string &alpn, const std::string &obfsParam, const std::string &insecure ,tribool udp, tribool tfo, tribool scv, tribool tls13)
 {
     commonConstruct(node, ProxyType::Hysteria, group, remarks, add, port, udp, tfo, scv, tls13);
     node.Auth = auth;
     node.Host = (host.empty() && !isIPv4(add) && !isIPv6(add)) ? add.data() : trim(host);
+    node.MPort = mport;
     node.UpMbps = up;
     node.DownMbps = down;
     node.Alpn = alpn;
@@ -1289,7 +1290,7 @@ void explodeStdVMess(std::string vmess, Proxy &node)
 
 void explodeStdHysteria(std::string hysteria, Proxy &node)
 {
-    std::string add, port, type, auth, host, insecure, up, down, alpn, obfsParam, remarks;
+    std::string add, port, type, auth, host, mport, insecure, up, down, alpn, obfsParam, remarks;
     std::string addition;
     hysteria = hysteria.substr(11);
     string_size pos;
@@ -1306,6 +1307,7 @@ void explodeStdHysteria(std::string hysteria, Proxy &node)
     type = getUrlArg(addition,"protocol");
     auth = getUrlArg(addition,"auth");
     host = getUrlArg(addition,"peer");
+    mport = getUrlArg(addition,"mport");
     insecure = getUrlArg(addition, "insecure");
     up = getUrlArg(addition,"upmbps");
     down = getUrlArg(addition,"downmbps");
@@ -1315,7 +1317,7 @@ void explodeStdHysteria(std::string hysteria, Proxy &node)
     if(remarks.empty())
         remarks = add + ":" + port;
 
-    hysteriaConstruct(node, HYSTERIA_DEFAULT_GROUP, remarks, add, port, type, auth, host, up, down, alpn, obfsParam, insecure);
+    hysteriaConstruct(node, HYSTERIA_DEFAULT_GROUP, remarks, add, port, type, auth, host, mport, up, down, alpn, obfsParam, insecure);
     return;
 }
 

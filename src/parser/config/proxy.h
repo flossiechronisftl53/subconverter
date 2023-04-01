@@ -102,6 +102,7 @@ struct Proxy
     String UpMbps;
     String DownMbps;
     String Insecure;
+    String MPort;
 
     String Fingerprint;
     String PublicKey;
