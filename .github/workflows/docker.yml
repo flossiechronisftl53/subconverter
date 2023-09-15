@@ -12,6 +12,11 @@ env:
   OWNER: ${{ github.repository_owner }}
   IMAGE_NAME: ${{ github.repository_owner }}/sub
 
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
